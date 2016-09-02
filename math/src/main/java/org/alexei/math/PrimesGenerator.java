@@ -13,16 +13,17 @@ public class PrimesGenerator implements Generator{
     private static final short[] INIT_PRIMES = {
         2,3,5,7,11,13,19,23,29,31,37,41,43,47,53,59,61,67,71
     };
+    private static final BigInteger TWO = BigInteger.valueOf(2);
     private int cacheIndex = 0;
     private static final int DEFAULT_STEP = 10;
     private final List<BigInteger> primes = new ArrayList<>();
-    private final int step;
+    private final BigInteger step;
     private BigInteger lastValue;
     PrimesGenerator() {
         this(DEFAULT_STEP);
     }
     PrimesGenerator(int step) {
-        this.step = step;
+        this.step = BigInteger.valueOf(step);
     }
     private boolean isNumberPrime(BigInteger number) throws InterruptedException {
         for (BigInteger prime: primes) {
@@ -35,7 +36,7 @@ public class PrimesGenerator implements Generator{
     }
     private List<BigInteger> getFromCache(){
         List<BigInteger> result = new LinkedList<>();
-        int maxIndex = cacheIndex + step;
+        int maxIndex = cacheIndex + step.intValue();
         for (;cacheIndex< maxIndex && cacheIndex< INIT_PRIMES.length; cacheIndex++) {
             int prime = INIT_PRIMES[cacheIndex];
             result.add(BigInteger.valueOf(prime));
@@ -50,9 +51,9 @@ public class PrimesGenerator implements Generator{
             lastValue = result.get(result.size() - 1);
             return result;
         }
-        BigInteger maxParam = lastValue.add(BigInteger.valueOf(step));
+        BigInteger maxParam = lastValue.add(step);
         List<BigInteger> result = new LinkedList<>();
-        for (BigInteger i = lastValue; i.compareTo(maxParam) < 1; i = i.add(BigInteger.ONE)) {
+        for (BigInteger i = lastValue; i.compareTo(maxParam) < 1; i = i.add(TWO)) {
             if (isNumberPrime(i)) {
                 result.add(i);
                 primes.add(i);

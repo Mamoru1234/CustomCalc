@@ -47,7 +47,7 @@ public class ButtonDescription {
     private void cancelPreviousTask(MainActivity context) {
         if (currentTask==null) return;
         if (!currentTask.isCancelled() && !currentTask.isDone()) {
-            context.showMessage("Previous task has been canceled" + currentTask.cancel(true));
+            context.showMessage("Previous task has been canceled");
         }
     }
     public View.OnClickListener getListener() {
