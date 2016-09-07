@@ -4,15 +4,8 @@ import java.math.BigInteger;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.ThreadFactory;
 
-/**
- * Created by user on 8/21/2016.
- */
-public class CanonicalFormat implements Iterable<NumberPower>{
+public class CanonicalFormat implements Iterable<NumberPower> {
     private final List<NumberPower> numbers = new LinkedList<>();
 
     private CanonicalFormat() {}
@@ -25,31 +18,29 @@ public class CanonicalFormat implements Iterable<NumberPower>{
     public final Iterator<NumberPower> iterator() {
         return numbers.iterator();
     }
+
     public int size() {
         return numbers.size();
     }
 
     public static CanonicalFormat convertFrom(BigInteger number) throws NullPointerException, IllegalArgumentException, InterruptedException {
-        if (number== null) {
-            throw new NullPointerException();
-        }
         if (number.compareTo(BigInteger.ONE) < 1) {
             throw new IllegalArgumentException();
         }
         final CanonicalFormat result = new CanonicalFormat();
         Generator generator = new PrimesGenerator();
-        while(number.compareTo(BigInteger.ONE) == 1) {
+        while (number.compareTo(BigInteger.ONE) == 1) {
             if (Thread.currentThread().isInterrupted()) {
                 throw new InterruptedException();
             }
-            for(BigInteger prime: generator.next()) {
+            for (BigInteger prime: generator.next()) {
                 if (number.equals(BigInteger.ONE)) break;
                 int power = 0;
                 while (number.mod(prime).equals(BigInteger.ZERO)) {
                     power++;
                     number = number.divide(prime);
                 }
-                if (power !=0) {
+                if (power != 0) {
                     result.addNumberPower(prime, power);
                 }
             }
@@ -60,8 +51,8 @@ public class CanonicalFormat implements Iterable<NumberPower>{
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (NumberPower rn: this) {
-            sb.append(rn.getNumber() + " " + rn.getPower()+"\n");
+        for (NumberPower rn : this) {
+            sb.append(rn.getNumber() + " " + rn.getPower() + "\n");
         }
         return sb.toString();
     }
