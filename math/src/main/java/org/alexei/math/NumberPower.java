@@ -2,9 +2,6 @@ package org.alexei.math;
 
 import java.math.BigInteger;
 
-/**
- * Created by user on 8/21/2016.
- */
 public class NumberPower {
     private final BigInteger number;
     private final int power;
