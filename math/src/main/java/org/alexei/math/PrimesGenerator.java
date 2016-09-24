@@ -27,10 +27,12 @@ public class PrimesGenerator implements Generator{
     }
 
     private boolean isNumberPrime(BigInteger number) throws InterruptedException {
+        BigInteger sqrt = MathUtil.sqrt(number);
         for (BigInteger prime: primes) {
             if (Thread.currentThread().isInterrupted()) {
                 throw new InterruptedException();
             }
+            if (prime.compareTo(sqrt) == 1) return true;
             if (number.mod(prime).equals(BigInteger.ZERO)) return false;
         }
         return true;
@@ -51,12 +53,12 @@ public class PrimesGenerator implements Generator{
     public List<BigInteger> next() throws InterruptedException {
         if (cacheIndex < INIT_PRIMES.length) {
             List<BigInteger> result = getFromCache();
-            lastValue = result.get(result.size() - 1);
+            lastValue = result.get(result.size() - 1).add(TWO);
             return result;
         }
         BigInteger maxParam = lastValue.add(step);
         List<BigInteger> result = new LinkedList<>();
-        for (BigInteger i = lastValue; i.compareTo(maxParam) < 1; i = i.add(TWO)) {
+        for (BigInteger i = lastValue; i.compareTo(maxParam) == -1; i = i.add(TWO)) {
             if (isNumberPrime(i)) {
                 result.add(i);
                 primes.add(i);

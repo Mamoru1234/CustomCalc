@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.*;
+import android.widget.EditText;
+import android.widget.GridView;
+import android.widget.TextView;
 
 import com.example.user.customcalc.utils.ParseUtils;
 import com.example.user.customcalc.utils.UIUtils;
@@ -44,14 +46,7 @@ public class MainActivity extends AppCompatActivity {
     public void registerBroadCastReceiver() {
         IntentFilter filter = new IntentFilter();
         filter.addAction(OPERATION_RESULT_ACTION);
-        broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                TextView outputView = UIUtils.getView(MainActivity.this, R.id.output);
-                Bundle bundle = intent.getExtras();
-                outputView.setText(bundle.getString(RESULT_KEY));
-            }
-        };
+        broadcastReceiver = new MathResultBroadCastReceiver(this);
         registerReceiver(broadcastReceiver, filter);
     }
 

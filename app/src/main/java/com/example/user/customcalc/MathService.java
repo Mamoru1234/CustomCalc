@@ -21,6 +21,7 @@ public class MathService {
     public static void perform(final BigInteger[] arguments, final BigInteger mod,
                                final Operation operation, final Activity activity) {
         if (currentTask != null && !currentTask.isCancelled() && !currentTask.isDone()) {
+            currentTask.cancel(true);
             UIUtils.showMessage(activity, "Previous task has been canceled");
         }
         currentTask = executor.submit(new Runnable() {
@@ -33,7 +34,7 @@ public class MathService {
                     UIUtils.showMessage(activity, e.getMessage());
                     Log.d(TAG, "Exception has occurred: " + e.getMessage());
                 } catch (InterruptedException e) {
-                    Log.d(TAG, "InterruptedException has occurred: ");
+                    Log.d(TAG, "InterruptedException has occurred");
                 }
             }
         });
